@@ -3,6 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Teaching-HEIGVD-RES-2016-Labo-HTTPInfra</title>
+				
+		<!-- JQuery -->
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 		
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -12,10 +15,40 @@
 
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		
+		<script>
+			// updates the location
+			function updateLocation() {
+				console.log("Updating location...");
+			
+				// make an AJAX request to get the locations
+				$.getJSON("/api/students/", function (data) {
+					console.log("Locations : " + JSON.stringify(data));
+				
+					// use the first location
+					var location = data[0];
+					
+					// construct the address string
+					var address = location.address + ", " + location.city;
+					
+					// update the subtitle value
+					$("#subTitle").text("Let's go to " + address + "!");
+				});
+				
+				// call the function again in 2.5 seconds
+				setTimeout(updateLocation, 2500);
+			}
+		
+			// when the HTML document is ready
+			$(document).ready(function(){
+				updateLocation();
+			});
+			
+		</script>
 	</head>
 	<body>
 		<h1 class="text-center"><b>D'oh!</b><h1>
-		<h2 class="text-center text-success" style="margin-bottom:20px">Some static <del>donuts</del> content!</h2>
+		<h2 id="subTitle" class="text-center text-success" style="margin-bottom:20px"></h2>
 		<img src="./images/homer.jpg" alt="Homer Simpson" class="img-rounded img-responsive center-block" />
 	</body>
 </html>
